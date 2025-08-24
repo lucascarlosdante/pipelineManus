@@ -162,7 +162,11 @@ jobs:
       run: pnpm install
       
     - name: Build for production
-      run: pnpm run build
+      env:
+        NODE_ENV: production
+      run: |
+        pnpm run build
+        touch dist/.nojekyll
       
     - name: Setup Pages
       uses: actions/configure-pages@v4
@@ -175,6 +179,8 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
   # Job de deploy para ambientes de staging
   deploy-staging:
