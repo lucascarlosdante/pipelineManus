@@ -216,18 +216,46 @@ jobs:
       run: |
         echo "Deploying to ${{ steps.env.outputs.environment }} environment"
         echo "URL: ${{ steps.env.outputs.url }}"
-        # Aqui seria feito o deploy real para o ambiente de staging
-        # Por exemplo, usando Netlify CLI, Vercel CLI, ou outro serviço
+        
+        # Install Netlify CLI
+        npm install -g netlify-cli
+        
+        # Deploy to Netlify based on environment
+        if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+          netlify deploy --dir=dist --site=${{ secrets.NETLIFY_DEV_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --alias=dev
+        elif [[ $GITHUB_REF == 'refs/heads/tst' ]]; then
+          netlify deploy --dir=dist --site=${{ secrets.NETLIFY_TST_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --alias=tst
+        elif [[ $GITHUB_REF == 'refs/heads/hml' ]]; then
+          netlify deploy --dir=dist --site=${{ secrets.NETLIFY_HML_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --alias=hml
+        fi
         
     - name: Comment PR with deployment info
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v7
       with:
         script: |
-          github.rest.issues.createComment({
+          const deploymentUrl = '${{ steps.env.outputs.url }}';
+          
+          await github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `🚀 Deploy realizado com sucesso!\n\n**Ambiente:** ${{ steps.env.outputs.environment }}\n**URL:** ${{ steps.env.outputs.url }}\n**Branch:** ${context.ref}`
+            body: `## 🚀 Deploy de Staging Realizado!
+            
+            **📍 Ambiente:** ${{ steps.env.outputs.environment }}
+            **🌐 URL:** ${deploymentUrl}
+            **🌿 Branch:** ${context.ref}
+            **📦 Commit:** ${context.sha.substring(0, 7)}
+            
+            ### ✅ Verificações realizadas:
+            - Build compilado com sucesso
+            - Assets otimizados e comprimidos  
+            - Deploy realizado no ambiente de staging
+            
+            ### 🔗 Links úteis:
+            - [Ver deploy](${deploymentUrl})
+            - [Ver commit](https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha})
+            
+            *Deploy realizado automaticamente via GitHub Actions*`
           })
 
