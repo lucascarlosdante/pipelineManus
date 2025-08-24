@@ -1,10 +1,15 @@
 name: Code Quality Checks
 
 on:
-  push:
-    branches: [ dev, tst, hml, prd, main ]
   pull_request:
-    branches: [ dev, tst, hml, prd, main ]
+    types: [ opened, synchronize, reopened ]
+    branches: [ tst ]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  statuses: write
 
 jobs:
   quality-checks:
