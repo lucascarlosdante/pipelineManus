@@ -37,7 +37,7 @@ Todos os elementos possuem `data-testid` para testes automatizados:
 ## Comandos de Desenvolvimento
 
 ```bash
-# Instalar dependências
+# Instalar dependências 
 pnpm install
 
 # Desenvolvimento
