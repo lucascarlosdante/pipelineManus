@@ -8,7 +8,7 @@ describe('Dashboard - CRUD de Itens', () => {
     cy.contains('Itens (3)').should('be.visible')
     cy.get('[data-testid="items-table"]').should('be.visible')
     
-    // Verifica itens iniciais
+    // Verifica itens iniciais  
     cy.itemShouldExist('Item de Exemplo 1')
     cy.itemShouldExist('Item de Exemplo 2')
     cy.itemShouldExist('Item de Exemplo 3')

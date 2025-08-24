@@ -11,7 +11,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: process.env.NODE_ENV === 'production' ? '/cicd-demo-app/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/pipelineManus/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
