@@ -78,17 +78,17 @@ jobs:
       uses: actions/github-script@v7
       with:
         script: |
-          const report = \`## 📊 Relatório de Qualidade
+          const report = `## 📊 Relatório de Qualidade
           
           ✅ **ESLint:** Passou sem erros
           ✅ **Build:** Compilado com sucesso  
           ✅ **Audit:** Sem vulnerabilidades críticas
           ✅ **Bundle Size:** Verificado e otimizado
           
-          **Branch:** \${context.ref}
-          **Commit:** \${context.sha.substring(0, 7)}
-          **Workflow:** [Ver detalhes](\${context.payload.pull_request.html_url}/checks)
-          \`;
+          **Branch:** ${context.ref}
+          **Commit:** ${context.sha.substring(0, 7)}
+          **Workflow:** [Ver detalhes](${context.payload.pull_request.html_url}/checks)
+          `;
           
           await github.rest.issues.createComment({
             issue_number: context.issue.number,
@@ -271,22 +271,16 @@ jobs:
           echo "url=https://hml-cicd-demo.netlify.app" >> $GITHUB_OUTPUT
         fi
         
-    - name: Deploy to staging environment
+    - name: Deploy to staging environment (DISABLED)
       run: |
-        echo "Deploying to ${{ steps.env.outputs.environment }} environment"
-        echo "URL: ${{ steps.env.outputs.url }}"
+        echo "🚧 Deploy staging temporariamente desabilitado"
+        echo "📍 Ambiente: ${{ steps.env.outputs.environment }}"
+        echo "🌐 URL: ${{ steps.env.outputs.url }}"
+        echo "✅ Build artifacts prontos para deploy manual se necessário"
         
-        # Install Netlify CLI
-        npm install -g netlify-cli
-        
-        # Deploy to Netlify based on environment
-        if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-          netlify deploy --dir=dist --site=${{ secrets.NETLIFY_DEV_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --alias=dev
-        elif [[ $GITHUB_REF == 'refs/heads/tst' ]]; then
-          netlify deploy --dir=dist --site=${{ secrets.NETLIFY_TST_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --alias=tst
-        elif [[ $GITHUB_REF == 'refs/heads/hml' ]]; then
-          netlify deploy --dir=dist --site=${{ secrets.NETLIFY_HML_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --alias=hml
-        fi
+        # TODO: Reabilitar quando configurar secrets do Netlify
+        # npm install -g netlify-cli
+        # netlify deploy --dir=dist --site=${{ secrets.NETLIFY_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }}
         
     - name: Comment PR with deployment info
       if: github.event_name == 'pull_request'
@@ -299,22 +293,22 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## 🚀 Deploy de Staging Realizado!
+            body: `## � Deploy de Staging (Temporariamente Desabilitado)
             
             **📍 Ambiente:** ${{ steps.env.outputs.environment }}
-            **🌐 URL:** ${deploymentUrl}
+            **🌐 URL:** ${deploymentUrl} *(não deployado)*
             **🌿 Branch:** ${context.ref}
             **📦 Commit:** ${context.sha.substring(0, 7)}
             
             ### ✅ Verificações realizadas:
             - Build compilado com sucesso
-            - Assets otimizados e comprimidos  
-            - Deploy realizado no ambiente de staging
+            - Assets otimizados e prontos para deploy
+            - Artefatos disponíveis para deploy manual
             
             ### 🔗 Links úteis:
-            - [Ver deploy](${deploymentUrl})
+            - [Ver artefatos do build](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
             - [Ver commit](https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha})
             
-            *Deploy realizado automaticamente via GitHub Actions*`
+            *⚡ Deploy staging desabilitado para otimizar tempo de execução*`
           })
 
