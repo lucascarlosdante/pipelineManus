@@ -64,10 +64,36 @@ jobs:
       uses: pnpm/action-setup@v4
       with:
         version: ${{ env.PNPM_VERSION }}
-        
+
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Cache Cypress binary
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/Cypress
+        key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          cypress-binary-
+
     - name: Install dependencies
-      run: pnpm install
+      run: |
+        pnpm install
+        pnpm rebuild @tailwindcss/oxide cypress esbuild --approve-scripts
       
+    - name: Verify Cypress
+      run: npx cypress verify
+
     - name: Run Cypress tests
       uses: cypress-io/github-action@v6
       with:
@@ -77,6 +103,7 @@ jobs:
         wait-on-timeout: 120
         browser: chrome
         record: false
+        install: false # já instalamos as dependências anteriormente
         
     - name: Upload Cypress screenshots
       uses: actions/upload-artifact@v4
