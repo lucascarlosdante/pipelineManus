@@ -29,7 +29,7 @@ describe('Diferenciação de Ambientes', () => {
   })
 
   it('deve mostrar indicador visual consistente', () => {
-    cy.visit('/login')
+    cy.visit('/#/login')
     
     // Verifica elementos visuais na página de login
     cy.get('div').contains('🚀 Ambiente:').should('be.visible')
