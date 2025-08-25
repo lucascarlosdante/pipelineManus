@@ -43,19 +43,17 @@ describe('Autenticação', () => {
   })
 
   it('deve fazer logout', () => {
-    cy.log('🔄 Iniciando teste de logout')
+    cy.get('[data-testid="email-input"]').type('teste@email.com')
+    cy.get('[data-testid="password-input"]').type('123456')
+    cy.get('[data-testid="login-button"]').click()
     
-    // Primeiro faz login
-    cy.log('📝 Fazendo login...')
-    cy.login()
-    
-    cy.log('✅ Login concluído, verificando dashboard...')
-    // Aguarda o dashboard carregar completamente
-    cy.contains('Dashboard', { timeout: 10000 }).should('be.visible')
+    cy.url().should('include', '#/dashboard')
+    // cy.contains('Dashboard').should('be.visible')
+    cy.contains('Dashboard', { timeout: 100 }).should('be.visible')
     
     cy.log('📊 Dashboard carregado, aguardando estabilização...')
     // Aguarda um pouco para garantir que tudo carregou
-    cy.wait(2000)
+    // cy.wait(2000)
     
     cy.log(' Fazendo logout...')
     // Agora faz logout
