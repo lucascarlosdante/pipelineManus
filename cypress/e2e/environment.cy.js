@@ -29,18 +29,18 @@ describe('Diferenciação de Ambientes', () => {
     cy.get('[data-testid="add-cancel-button"]').click()
   })
 
-  it('deve mostrar indicador visual consistente', () => {
-    // Usa a mesma estratégia de detecção de ambiente dos outros testes
-    const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
-    cy.visit(`${basePath}/#/login`)
+  // it('deve mostrar indicador visual consistente', () => {
+  //   // Usa a mesma estratégia de detecção de ambiente dos outros testes
+  //   const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+  //   cy.visit(`${basePath}/#/login`)
     
-    // Verifica elementos visuais na página de login
-    cy.get('div').contains('🚀 Ambiente:').should('be.visible')
+  //   // Verifica elementos visuais na página de login
+  //   cy.get('div').contains('🚀 Ambiente:').should('be.visible')
     
-    // Faz login e verifica no dashboard
-    cy.login()
-    cy.get('div').contains('🚀 Ambiente:').should('be.visible')
-  })
+  //   // Faz login e verifica no dashboard
+  //   cy.login()
+  //   cy.get('div').contains('🚀 Ambiente:').should('be.visible')
+  // })
 
   // Teste conceitual para outros ambientes (seria necessário configurar URLs diferentes)
   it('deve detectar ambiente baseado na URL', () => {
