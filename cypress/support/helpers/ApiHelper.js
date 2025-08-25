@@ -228,7 +228,7 @@ export class ApiHelper {
       const requestId = `${req.method}_${req.url}`
       requestTimes[requestId] = performance.now()
 
-      req.on('response', res => {
+      req.on('response', () => {
         const duration = performance.now() - requestTimes[requestId]
         
         if (duration > 2000) {
