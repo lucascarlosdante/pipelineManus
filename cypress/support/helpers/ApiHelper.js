@@ -124,7 +124,7 @@ export class ApiHelper {
    * Configura mock de API com delay para simular latência
    */
   static setupSlowApiMocks(delay = 1000) {
-    cy.intercept('POST', '**/auth/login', req => {
+    cy.intercept('POST', '**/auth/login', () => {
       return new Promise(resolve => {
         setTimeout(() => {
           resolve({
@@ -208,8 +208,8 @@ export class ApiHelper {
   /**
    * Simula timeout de request
    */
-  static setupTimeoutMock(url, timeout = 30000) {
-    cy.intercept(url, req => {
+  static setupTimeoutMock(url) {
+    cy.intercept(url, () => {
       return new Promise(() => {
         // Never resolves, causing timeout
       })

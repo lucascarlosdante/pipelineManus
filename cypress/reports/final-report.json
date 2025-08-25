@@ -1,11 +1,11 @@
 {
   "summary": {
-    "totalTests": 52,
-    "totalPassed": 43,
-    "totalFailed": 5,
-    "totalSkipped": 4,
-    "totalDuration": 258946
+    "totalTests": 32,
+    "totalPassed": 32,
+    "totalFailed": 0,
+    "totalSkipped": 0,
+    "totalDuration": 65880
   },
-  "timestamp": "2025-08-25T04:24:25.540Z",
+  "timestamp": "2025-08-25T04:36:28.188Z",
   "environment": "Local"
 }

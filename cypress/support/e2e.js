@@ -90,7 +90,7 @@ after(() => {
 // =============================================================================
 
 // Previne que erros de aplicação quebrem os testes
-Cypress.on('uncaught:exception', (err, runnable) => {
+Cypress.on('uncaught:exception', (err) => {
   // Lista de erros que podem ser ignorados
   const ignoredErrors = [
     'Script error.',
