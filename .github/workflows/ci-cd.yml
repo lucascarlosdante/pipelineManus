@@ -165,6 +165,14 @@ jobs:
         npx cypress cache path
         npx cypress cache list
         npx cypress verify
+
+    - name: Setup virtual display for Electron
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 3
       
     - name: Run Cypress tests
       uses: cypress-io/github-action@v6
@@ -180,6 +188,10 @@ jobs:
       env:
         CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
         CI: true
+        DISPLAY: ':99'
+        DBUS_SESSION_BUS_ADDRESS: 'disabled'
+        NO_SANDBOX: '1'
+        ELECTRON_DISABLE_SANDBOX: '1'
         
     - name: Upload Cypress screenshots
       uses: actions/upload-artifact@v4
