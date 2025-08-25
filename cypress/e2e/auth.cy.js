@@ -4,7 +4,7 @@ describe('Autenticação', () => {
     cy.visit(`${basePath}`)
     
     // Aguarda a página carregar completamente antes de prosseguir
-    cy.get('body', { timeout: 15000 }).should('be.visible')
+    cy.get('body').should('be.visible')
   })
 
   it('deve redirecionar para login quando não autenticado', () => {
@@ -31,8 +31,7 @@ describe('Autenticação', () => {
     cy.get('[data-testid="password-input"]').type('123')
     cy.get('[data-testid="login-button"]').click()
     
-    // Aguarda um pouco e verifica se ainda está na página de login (não fez login)
-    cy.wait(1000)
+    // Verifica se ainda está na página de login (não fez login)
     cy.url().should('include', '#/login')
   })
 
@@ -43,17 +42,17 @@ describe('Autenticação', () => {
   })
 
   it('deve fazer logout', () => {
-    // Primeiro faz login
-    cy.login()
+    cy.get('[data-testid="email-input"]').type('teste@email.com')
+    cy.get('[data-testid="password-input"]').type('123456')
+    cy.get('[data-testid="login-button"]').click()
     
-    // Aguarda o dashboard carregar completamente
-    cy.contains('Dashboard', { timeout: 10000 }).should('be.visible')
+    cy.url().should('include', '#/dashboard')
+    cy.contains('Dashboard').should('be.visible')
     
-    // Aguarda um pouco para garantir que tudo carregou
-    cy.wait(1000)
-    
-    // Agora faz logout
+    cy.log('📊 Dashboard carregado, fazendo logout...')
     cy.logout()
+    
+    cy.log('✅ Logout concluído com sucesso!')
   })
 
   it('deve mostrar/ocultar senha', () => {

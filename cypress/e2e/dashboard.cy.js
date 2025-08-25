@@ -24,11 +24,13 @@ describe('Dashboard - CRUD de Itens', () => {
     cy.get('[data-testid="add-name-input"]').type(itemName)
     cy.get('[data-testid="add-description-input"]').type(itemDescription)
     
+    // Seleciona prioridade usando Radix UI Select
     cy.get('[data-testid="add-priority-select"]').click()
-    cy.contains('Alta').click()
+    cy.get('[data-slot="select-item"]').contains('Alta').click()
     
+    // Seleciona categoria usando Radix UI Select
     cy.get('[data-testid="add-category-select"]').click()
-    cy.contains('Trabalho').click()
+    cy.get('[data-slot="select-item"]').contains('Trabalho').click()
     
     cy.get('[data-testid="add-submit-button"]').click()
     
@@ -73,14 +75,36 @@ describe('Dashboard - CRUD de Itens', () => {
   })
 
   it('deve editar item', () => {
+    // Primeiro, verifica o item original
+    cy.itemShouldExist('Item de Exemplo 1')
+    
     cy.get('[data-testid="item-actions-1"]').click()
     cy.get('[data-testid="edit-item-1"]').click()
     
     cy.get('[data-testid="edit-item-modal"]').should('be.visible')
-    cy.get('[data-testid="edit-name-input"]').clear().type('Item Editado')
+    
+    // Verifica se o campo está preenchido corretamente
+    cy.get('[data-testid="edit-name-input"]').should('have.value', 'Item de Exemplo 1')
+    
+    // Usa invoke para definir o valor diretamente
+    cy.get('[data-testid="edit-name-input"]')
+      .clear()
+      .invoke('val', 'Item Editado')
+      .trigger('input') // Dispara o evento input para que o React detecte a mudança
+    
+    // Verifica se o novo valor foi inserido corretamente
+    cy.get('[data-testid="edit-name-input"]').should('have.value', 'Item Editado')
+    
+    // Clica no botão de salvar
     cy.get('[data-testid="edit-submit-button"]').click()
     
+    // Aguarda o modal ser fechado
     cy.get('[data-testid="edit-item-modal"]').should('not.exist')
+    
+    // Aguarda um momento para a tabela ser atualizada
+    cy.wait(500)
+    
+    // Verifica se o item foi editado na tabela
     cy.itemShouldExist('Item Editado')
   })
 

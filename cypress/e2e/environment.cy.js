@@ -30,7 +30,9 @@ describe('Diferenciação de Ambientes', () => {
   })
 
   it('deve mostrar indicador visual consistente', () => {
-    cy.visit('/pipelineManus/#/login')
+    // Usa a mesma estratégia de detecção de ambiente dos outros testes
+    const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+    cy.visit(`${basePath}/#/login`)
     
     // Verifica elementos visuais na página de login
     cy.get('div').contains('🚀 Ambiente:').should('be.visible')
@@ -45,7 +47,8 @@ describe('Diferenciação de Ambientes', () => {
     // Este teste seria executado em diferentes URLs para cada ambiente
     // Por exemplo: dev.app.com, tst.app.com, hml.app.com, prd.app.com
     
-    cy.visit('/pipelineManus')
+    cy.login()
+    // cy.visit('/pipelineManus')
     
     // Para desenvolvimento local, sempre será 'dev'
     cy.checkEnvironment('dev')

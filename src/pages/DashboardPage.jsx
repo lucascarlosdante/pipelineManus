@@ -53,6 +53,7 @@ export function DashboardPage() {
     register: registerAdd,
     handleSubmit: handleSubmitAdd,
     reset: resetAdd,
+    setValue: setValueAdd,
     formState: { errors: errorsAdd },
   } = useForm({
     resolver: zodResolver(itemSchema),
@@ -272,7 +273,7 @@ export function DashboardPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="add-priority">Prioridade</Label>
-                      <Select onValueChange={(value) => registerAdd('priority').onChange({ target: { value } })}>
+                      <Select onValueChange={(value) => setValueAdd('priority', value)}>
                         <SelectTrigger data-testid="add-priority-select">
                           <SelectValue placeholder="Selecione" />
                         </SelectTrigger>
@@ -289,7 +290,7 @@ export function DashboardPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="add-category">Categoria</Label>
-                      <Select onValueChange={(value) => registerAdd('category').onChange({ target: { value } })}>
+                      <Select onValueChange={(value) => setValueAdd('category', value)}>
                         <SelectTrigger data-testid="add-category-select">
                           <SelectValue placeholder="Selecione" />
                         </SelectTrigger>

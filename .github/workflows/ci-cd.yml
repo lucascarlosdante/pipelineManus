@@ -165,6 +165,17 @@ jobs:
         npx cypress cache path
         npx cypress cache list
         npx cypress verify
+
+    - name: Setup virtual display for Electron
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb dbus-x11
+        export DISPLAY=:99
+        export DBUS_SESSION_BUS_ADDRESS=/dev/null
+        Xvfb :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
+        sleep 3
+        echo "DISPLAY=:99" >> $GITHUB_ENV
+        echo "DBUS_SESSION_BUS_ADDRESS=/dev/null" >> $GITHUB_ENV
       
     - name: Run Cypress tests
       uses: cypress-io/github-action@v6
@@ -174,12 +185,22 @@ jobs:
         start: pnpm run preview
         wait-on: 'http://localhost:4173'
         wait-on-timeout: 120
-        browser: chrome
+        browser: electron
         record: false
         config-file: cypress.config.js
       env:
         CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
         CI: true
+        DISPLAY: ':99'
+        DBUS_SESSION_BUS_ADDRESS: '/dev/null'
+        NO_SANDBOX: '1'
+        ELECTRON_DISABLE_SANDBOX: '1'
+        ELECTRON_DISABLE_GPU: '1'
+        ELECTRON_DISABLE_DEV_SHM_USAGE: '1'
+        ELECTRON_NO_ATTACH_CONSOLE: '1'
+        ELECTRON_ENABLE_LOGGING: '0'
+        XDG_RUNTIME_DIR: '/tmp'
+        LIBGL_ALWAYS_SOFTWARE: '1'
         
     - name: Upload Cypress screenshots
       uses: actions/upload-artifact@v4
