@@ -111,8 +111,8 @@ export default defineConfig({
       on('before:browser:launch', (browser, launchOptions) => {
         console.log(`🚀 Launching browser: ${browser.name} ${browser.version}`)
         
-        if (browser.family === 'chromium') {
-          // Chrome/Edge optimizations
+        if (browser.family === 'chromium' && browser.name !== 'electron') {
+          // Chrome/Edge optimizations (não aplicar no Electron)
           launchOptions.args.push('--disable-web-security')
           launchOptions.args.push('--disable-features=VizDisplayCompositor')
           launchOptions.args.push('--disable-dev-shm-usage') // Para CI
@@ -130,6 +130,11 @@ export default defineConfig({
             launchOptions.args.push('--disable-extensions')
             launchOptions.args.push('--disable-plugins')
           }
+        }
+        
+        if (browser.name === 'electron') {
+          console.log('⚡ Electron browser detected - using default configuration')
+          // Não adicionar argumentos customizados para Electron
         }
         
         return launchOptions
