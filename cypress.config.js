@@ -11,11 +11,14 @@ export default defineConfig({
     screenshotOnRunFailure: true,
     // Configurações de timeout mais generosas para CI
     defaultCommandTimeout: process.env.CI ? 15000 : 4000,
-    pageLoadTimeout: process.env.CI ? 90000 : 60000,
-    requestTimeout: process.env.CI ? 10000 : 5000,
+    pageLoadTimeout: process.env.CI ? 180000 : 60000, // 3 minutos no CI
+    requestTimeout: process.env.CI ? 15000 : 5000,
     // Configurações adicionais para debug
     chromeWebSecurity: false,
     watchForFileChanges: false,
+    // Configurações para evitar problemas de carregamento no CI
+    blockHosts: process.env.CI ? ['*googlesyndication.com', '*google-analytics.com', '*googletagmanager.com'] : [],
+    modifyObstructiveThirdPartyCode: true,
     setupNodeEvents(on /* config */) {
       // Log de debug para rastrear eventos
       on('before:browser:launch', (browser = {}, launchOptions) => {

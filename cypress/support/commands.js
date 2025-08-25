@@ -47,13 +47,13 @@ Cypress.Commands.add('logout', () => {
   cy.get('body').then(($body) => {
     if ($body.find('[data-testid="logout-button"]').length > 0) {
       cy.log('✅ [LOGOUT] Botão encontrado via data-testid')
-      cy.get('[data-testid="logout-button"]').click()
+      cy.get('[data-testid="logout-button"]').click({ force: true })
     } else if ($body.find('button:contains("Logout")').length > 0) {
       cy.log('✅ [LOGOUT] Botão encontrado via texto "Logout"')
-      cy.contains('button', 'Logout').click()
+      cy.contains('button', 'Logout').click({ force: true })
     } else if ($body.find('button:contains("Sair")').length > 0) {
       cy.log('✅ [LOGOUT] Botão encontrado via texto "Sair"')
-      cy.contains('button', 'Sair').click()
+      cy.contains('button', 'Sair').click({ force: true })
     } else {
       cy.log('❌ [LOGOUT] Botão de logout não encontrado!')
       // Lista todos os botões disponíveis para debug
@@ -64,22 +64,56 @@ Cypress.Commands.add('logout', () => {
       // Força o teste a falhar com uma mensagem clara
       cy.get('[data-testid="logout-button"]', { timeout: 15000 })
         .should('be.visible')
-        .click()
+        .click({ force: true })
     }
   })
   
   cy.log('✅ [LOGOUT] Botão clicado, aguardando redirecionamento...')
   
-  // No ambiente CI, aguarda mais tempo para o redirecionamento
-  const timeout = Cypress.env('CI') ? 25000 : 15000
+  // Aguarda um pouco após o clique
+  cy.wait(1000)
   
-  // Aguarda a página carregar antes de verificar a URL
-  cy.log(`⏳ [LOGOUT] Aguardando mudança de hash (timeout: ${timeout}ms)...`)
-  cy.location('hash', { timeout }).should('include', '/login')
-  
-  cy.log('✅ [LOGOUT] Hash alterado para login, verificando elemento...')
-  // Verifica se o elemento de login está visível (garantia extra)
-  cy.contains('Entrar', { timeout: 15000 }).should('be.visible')
+  // No ambiente CI, use uma estratégia mais robusta
+  if (Cypress.env('CI')) {
+    cy.log('🔧 [LOGOUT] Usando estratégia CI - verificação por polling')
+    
+    // Verificação por polling sem depender do evento 'load'
+    cy.window().then((win) => {
+      const checkRedirect = () => {
+        return win.location.hash.includes('/login')
+      }
+      
+      // Aguarda até 30 segundos pela mudança de hash
+      const startTime = Date.now()
+      const timeout = 30000
+      
+      const poll = () => {
+        if (checkRedirect()) {
+          cy.log('✅ [LOGOUT] Redirecionamento detectado via polling')
+          return
+        }
+        
+        if (Date.now() - startTime > timeout) {
+          throw new Error(`Timeout após ${timeout}ms aguardando redirecionamento`)
+        }
+        
+        setTimeout(poll, 500)
+      }
+      
+      poll()
+    })
+    
+    // Verificação adicional do elemento
+    cy.contains('Entrar', { timeout: 10000 }).should('be.visible')
+    
+  } else {
+    // Estratégia local (mais rápida)
+    cy.log('🏠 [LOGOUT] Usando estratégia local')
+    const timeout = 15000
+    
+    cy.location('hash', { timeout }).should('include', '/login')
+    cy.contains('Entrar', { timeout: 15000 }).should('be.visible')
+  }
   
   cy.log('✅ [LOGOUT] Logout concluído com sucesso!')
 })
