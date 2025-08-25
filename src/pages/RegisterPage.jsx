@@ -157,8 +157,8 @@ export function RegisterPage() {
 
             <div className="space-y-2">
               <Label htmlFor="department">Departamento</Label>
-              <Select onValueChange={(value) => setValue('department', value)} data-testid="department-select">
-                <SelectTrigger>
+              <Select onValueChange={(value) => setValue('department', value)}>
+                <SelectTrigger data-testid="department-select">
                   <SelectValue placeholder="Selecione seu departamento" />
                 </SelectTrigger>
                 <SelectContent>

@@ -128,6 +128,8 @@ Cypress.Commands.add('addItem', (name, description, priority = 'medium', categor
 
 // Comando para verificar se um item existe na tabela
 Cypress.Commands.add('itemShouldExist', (itemName) => {
+  // Aguarda a tabela estar visível e contém o item
+  cy.get('[data-testid="items-table"]').should('be.visible')
   cy.get('[data-testid="items-table"]').should('contain', itemName)
 })
 
