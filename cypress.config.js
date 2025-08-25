@@ -16,7 +16,7 @@ export default defineConfig({
     // Configurações adicionais para debug
     chromeWebSecurity: false,
     watchForFileChanges: false,
-    setupNodeEvents(on, config) {
+    setupNodeEvents(on /* config */) {
       // Log de debug para rastrear eventos
       on('before:browser:launch', (browser = {}, launchOptions) => {
         console.log('🚀 Lançando browser:', browser.name, browser.version)
