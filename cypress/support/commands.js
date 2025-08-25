@@ -12,16 +12,28 @@
 Cypress.Commands.add('login', (email = 'teste@email.com', password = '123456') => {
   const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
   cy.visit(`${basePath}/#/login`)
-  cy.get('[data-testid="email-input"]').type(email)
-  cy.get('[data-testid="password-input"]').type(password)
-  cy.get('[data-testid="login-button"]').click()
-  cy.url().should('include', '#/dashboard')
+  
+  // Aguarda a página de login carregar completamente
+  cy.contains('Entrar', { timeout: 10000 }).should('be.visible')
+  
+  cy.get('[data-testid="email-input"]', { timeout: 10000 }).type(email)
+  cy.get('[data-testid="password-input"]', { timeout: 10000 }).type(password)
+  cy.get('[data-testid="login-button"]', { timeout: 10000 }).click()
+  
+  // Aguarda a transição para o dashboard
+  cy.location('hash', { timeout: 15000 }).should('include', '/dashboard')
+  cy.contains('Dashboard', { timeout: 10000 }).should('be.visible')
 })
 
 // Comando para fazer logout
 Cypress.Commands.add('logout', () => {
-  cy.get('[data-testid="logout-button"]').click()
-  cy.url().should('include', '#/login')
+  cy.get('[data-testid="logout-button"]', { timeout: 10000 }).click()
+  
+  // Aguarda a página carregar antes de verificar a URL
+  cy.location('hash', { timeout: 15000 }).should('include', '/login')
+  
+  // Verifica se o elemento de login está visível (garantia extra)
+  cy.contains('Entrar', { timeout: 10000 }).should('be.visible')
 })
 
 // Comando para adicionar um item

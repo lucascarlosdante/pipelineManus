@@ -2,6 +2,9 @@ describe('Autenticação', () => {
   beforeEach(() => {
     const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
     cy.visit(`${basePath}`)
+    
+    // Aguarda a página carregar completamente antes de prosseguir
+    cy.get('body', { timeout: 15000 }).should('be.visible')
   })
 
   it('deve redirecionar para login quando não autenticado', () => {
@@ -40,7 +43,16 @@ describe('Autenticação', () => {
   })
 
   it('deve fazer logout', () => {
+    // Primeiro faz login
     cy.login()
+    
+    // Aguarda o dashboard carregar completamente
+    cy.contains('Dashboard', { timeout: 10000 }).should('be.visible')
+    
+    // Aguarda um pouco para garantir que tudo carregou
+    cy.wait(1000)
+    
+    // Agora faz logout
     cy.logout()
   })
 

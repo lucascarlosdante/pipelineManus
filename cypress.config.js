@@ -9,6 +9,10 @@ export default defineConfig({
     viewportHeight: 720,
     video: false,
     screenshotOnRunFailure: true,
+    // Configurações de timeout mais generosas para CI
+    defaultCommandTimeout: process.env.CI ? 15000 : 4000,
+    pageLoadTimeout: process.env.CI ? 90000 : 60000,
+    requestTimeout: process.env.CI ? 10000 : 5000,
     setupNodeEvents(/* on, config */) {
       // implement node event listeners here
     },
