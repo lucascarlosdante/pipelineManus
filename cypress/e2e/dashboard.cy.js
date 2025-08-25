@@ -24,11 +24,13 @@ describe('Dashboard - CRUD de Itens', () => {
     cy.get('[data-testid="add-name-input"]').type(itemName)
     cy.get('[data-testid="add-description-input"]').type(itemDescription)
     
+    // Seleciona prioridade usando Radix UI Select
     cy.get('[data-testid="add-priority-select"]').click()
-    cy.contains('Alta').click()
+    cy.get('[data-slot="select-item"]').contains('Alta').click()
     
+    // Seleciona categoria usando Radix UI Select
     cy.get('[data-testid="add-category-select"]').click()
-    cy.contains('Trabalho').click()
+    cy.get('[data-slot="select-item"]').contains('Trabalho').click()
     
     cy.get('[data-testid="add-submit-button"]').click()
     
