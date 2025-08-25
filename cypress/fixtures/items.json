@@ -1,0 +1,182 @@
+{
+  "defaultItems": [
+    {
+      "id": 1,
+      "name": "Item de Exemplo 1",
+      "description": "Primeira tarefa de exemplo no sistema",
+      "priority": "medium",
+      "category": "trabalho",
+      "completed": false
+    },
+    {
+      "id": 2, 
+      "name": "Item de Exemplo 2",
+      "description": "Segunda tarefa de exemplo no sistema",
+      "priority": "high",
+      "category": "projeto",
+      "completed": true
+    },
+    {
+      "id": 3,
+      "name": "Item de Exemplo 3", 
+      "description": "Terceira tarefa de exemplo no sistema",
+      "priority": "low",
+      "category": "pessoal",
+      "completed": false
+    }
+  ],
+
+  "newItems": [
+    {
+      "name": "Novo Item de Teste",
+      "description": "Descrição do novo item de teste",
+      "priority": "Alta",
+      "category": "Trabalho"
+    },
+    {
+      "name": "Tarefa Urgente",
+      "description": "Item com prioridade alta para testes",
+      "priority": "Alta", 
+      "category": "Projeto"
+    },
+    {
+      "name": "Atividade Pessoal",
+      "description": "Item de categoria pessoal para testes",
+      "priority": "Baixa",
+      "category": "Pessoal"
+    },
+    {
+      "name": "Reunião de Equipe",
+      "description": "Agendar reunião semanal da equipe",
+      "priority": "Média",
+      "category": "Trabalho"
+    },
+    {
+      "name": "Relatório Mensal",
+      "description": "Finalizar relatório de performance mensal",
+      "priority": "Alta",
+      "category": "Projeto"
+    }
+  ],
+
+  "bulkItems": [
+    {
+      "name": "Item Bulk 1",
+      "description": "Primeiro item para teste de bulk",
+      "priority": "Média", 
+      "category": "Geral"
+    },
+    {
+      "name": "Item Bulk 2", 
+      "description": "Segundo item para teste de bulk",
+      "priority": "Baixa",
+      "category": "Geral"
+    },
+    {
+      "name": "Item Bulk 3",
+      "description": "Terceiro item para teste de bulk", 
+      "priority": "Alta",
+      "category": "Geral"
+    }
+  ],
+
+  "searchTestItems": [
+    {
+      "name": "Busca Item Único",
+      "description": "Item específico para testes de busca",
+      "priority": "Média",
+      "category": "Trabalho"
+    },
+    {
+      "name": "Sistema de Pagamentos", 
+      "description": "Implementar novo sistema de pagamentos",
+      "priority": "Alta",
+      "category": "Projeto"
+    },
+    {
+      "name": "Interface do Usuário",
+      "description": "Melhorar interface do usuário atual",
+      "priority": "Média", 
+      "category": "Trabalho"
+    }
+  ],
+
+  "priorities": [
+    {
+      "value": "low",
+      "label": "Baixa",
+      "displayName": "Baixa"
+    },
+    {
+      "value": "medium", 
+      "label": "Média",
+      "displayName": "Média"
+    },
+    {
+      "value": "high",
+      "label": "Alta", 
+      "displayName": "Alta"
+    }
+  ],
+
+  "categories": [
+    {
+      "value": "geral",
+      "label": "Geral",
+      "displayName": "Geral"
+    },
+    {
+      "value": "trabalho",
+      "label": "Trabalho", 
+      "displayName": "Trabalho"
+    },
+    {
+      "value": "pessoal",
+      "label": "Pessoal",
+      "displayName": "Pessoal"
+    },
+    {
+      "value": "projeto",
+      "label": "Projeto",
+      "displayName": "Projeto"
+    }
+  ],
+
+  "editTestData": [
+    {
+      "original": {
+        "name": "Item Original",
+        "description": "Descrição original",
+        "priority": "Baixa",
+        "category": "Geral"
+      },
+      "updated": {
+        "name": "Item Editado",
+        "description": "Descrição atualizada",
+        "priority": "Alta", 
+        "category": "Projeto"
+      }
+    }
+  ],
+
+  "validationTestItems": {
+    "emptyName": {
+      "name": "",
+      "description": "Item sem nome para teste de validação",
+      "priority": "Média",
+      "category": "Geral"
+    },
+    "longName": {
+      "name": "Este é um nome extremamente longo para testar validação de limite de caracteres do campo nome",
+      "description": "Teste de nome longo",
+      "priority": "Baixa",
+      "category": "Trabalho"
+    },
+    "emptyDescription": {
+      "name": "Item sem descrição",
+      "description": "",
+      "priority": "Alta",
+      "category": "Pessoal"
+    }
+  }
+}
