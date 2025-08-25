@@ -192,7 +192,6 @@ export class EnvironmentHelper {
    * Log com informações do ambiente
    */
   static logEnvironmentInfo() {
-    const env = this.getCurrentEnvironment()
     const config = this.getEnvironmentConfig()
     const isCI = this.isCI()
     const basePath = this.getBasePath()

@@ -47,7 +47,7 @@ export class PerformanceHelper {
    * Mede tempo de carregamento da página
    */
   static measurePageLoad(pageName) {
-    cy.window().then(win => {
+    cy.window().then(() => {
       // Aguarda o evento de load completo
       cy.window().its('performance').then(perf => {
         const loadTime = perf.timing.loadEventEnd - perf.timing.navigationStart
@@ -68,7 +68,7 @@ export class PerformanceHelper {
   static monitorNetworkRequests() {
     cy.intercept('**', req => {
       const startTime = performance.now()
-      req.on('response', res => {
+      req.on('response', () => {
         const endTime = performance.now()
         const duration = endTime - startTime
         
@@ -158,9 +158,6 @@ export class PerformanceHelper {
   static generatePerformanceReport() {
     cy.then(() => {
       cy.log('📊 [PERFORMANCE REPORT] Gerando relatório final...')
-      
-      // Coleta todas as métricas salvas
-      const metrics = []
       
       // Procura por todos os aliases de métricas
       cy.task('log', 'Performance test completed - check metrics for detailed results')

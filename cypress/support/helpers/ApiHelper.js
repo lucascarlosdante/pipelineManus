@@ -318,7 +318,7 @@ export class ApiHelper {
   static setupRetryInterception(url, maxRetries = 3) {
     let attemptCount = 0
 
-    cy.intercept(url, req => {
+    cy.intercept(url, () => {
       attemptCount++
       
       if (attemptCount <= maxRetries && Math.random() < 0.3) {
