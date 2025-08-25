@@ -1,0 +1,103 @@
+{
+  "environments": {
+    "dev": {
+      "name": "Desenvolvimento",
+      "code": "DEV",
+      "color": "verde",
+      "description": "Ambiente de desenvolvimento local",
+      "url": "http://localhost:5173",
+      "ciUrl": "http://localhost:4173"
+    },
+    "tst": {
+      "name": "Teste",
+      "code": "TST", 
+      "color": "amarelo",
+      "description": "Ambiente de testes automatizados",
+      "url": "https://tst.app.com"
+    },
+    "hml": {
+      "name": "Homologação",
+      "code": "HML",
+      "color": "azul", 
+      "description": "Ambiente de homologação para validação",
+      "url": "https://hml.app.com"
+    },
+    "prd": {
+      "name": "Produção", 
+      "code": "PRD",
+      "color": "vermelho",
+      "description": "Ambiente de produção", 
+      "url": "https://prd.app.com"
+    }
+  },
+
+  "testScenarios": [
+    {
+      "scenario": "localDevelopment",
+      "environment": "dev",
+      "expectedElements": [
+        "Ambiente: Desenvolvimento",
+        "(DEV)",
+        "🚀 Ambiente:"
+      ]
+    },
+    {
+      "scenario": "ciExecution",
+      "environment": "dev",
+      "basePath": "/pipelineManus",
+      "expectedElements": [
+        "Ambiente: Desenvolvimento", 
+        "(DEV)",
+        "🚀 Ambiente:"
+      ]
+    }
+  ],
+
+  "visualElements": {
+    "environmentBadge": {
+      "selector": "div:contains('🚀 Ambiente:')",
+      "expectedTexts": [
+        "🚀 Ambiente: Desenvolvimento (DEV)",
+        "🚀 Ambiente: Teste (TST)",
+        "🚀 Ambiente: Homologação (HML)", 
+        "🚀 Ambiente: Produção (PRD)"
+      ]
+    },
+    "headerEnvironment": {
+      "selector": "div:contains('Ambiente:')",
+      "expectedPatterns": [
+        "Ambiente: Desenvolvimento",
+        "Ambiente: Teste",
+        "Ambiente: Homologação",
+        "Ambiente: Produção"
+      ]
+    }
+  },
+
+  "colorSchemes": {
+    "dev": {
+      "primary": "green",
+      "background": "bg-green-50",
+      "text": "text-green-800",
+      "border": "border-green-200"
+    },
+    "tst": {
+      "primary": "yellow", 
+      "background": "bg-yellow-50",
+      "text": "text-yellow-800",
+      "border": "border-yellow-200"
+    },
+    "hml": {
+      "primary": "blue",
+      "background": "bg-blue-50", 
+      "text": "text-blue-800",
+      "border": "border-blue-200"
+    },
+    "prd": {
+      "primary": "red",
+      "background": "bg-red-50",
+      "text": "text-red-800",
+      "border": "border-red-200"
+    }
+  }
+}

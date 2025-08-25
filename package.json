@@ -8,10 +8,38 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "cypress:run:headed": "cypress run --headed",
+    "cypress:run:chrome": "cypress run --browser chrome",
+    "cypress:run:edge": "cypress run --browser edge",
+    "cypress:run:electron": "cypress run --browser electron",
+    
     "test:e2e": "cypress run",
-    "test:e2e:dev": "cypress open"
+    "test:e2e:dev": "cypress open",
+    "test:e2e:headed": "cypress run --headed --no-exit",
+    "test:e2e:spec": "cypress run --spec",
+    "test:e2e:tag": "cypress run --env grepTags=",
+    
+    "test:auth": "cypress run --spec 'cypress/e2e/*auth*.cy.js'",
+    "test:dashboard": "cypress run --spec 'cypress/e2e/*dashboard*.cy.js'",
+    "test:register": "cypress run --spec 'cypress/e2e/*register*.cy.js'",
+    "test:environment": "cypress run --spec 'cypress/e2e/*environment*.cy.js'",
+    
+    "test:smoke": "cypress run --env grepTags=@smoke",
+    "test:critical": "cypress run --env grepTags=@critical",
+    "test:regression": "cypress run --env grepTags=@regression",
+    
+    "test:parallel": "cypress run --record --parallel --ci-build-id $BUILD_ID",
+    "test:ci": "cypress run --browser electron --record --key $CYPRESS_RECORD_KEY",
+    
+    "cypress:clean": "rm -rf cypress/screenshots cypress/videos cypress/reports",
+    "cypress:report": "cypress run --reporter mochawesome --reporter-options reportDir=cypress/reports,overwrite=false,html=true,json=true",
+    
+    "test:performance": "cypress run --env monitorPerformance=true",
+    "test:debug": "cypress open --env debug=true",
+    "test:fast": "cypress run --config video=false,screenshotOnRunFailure=false"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
