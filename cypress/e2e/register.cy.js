@@ -1,6 +1,7 @@
 describe('Cadastro de Usuário', () => {
   beforeEach(() => {
-    cy.visit('/pipelineManus/#/register')
+    const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+    cy.visit(`${basePath}/#/register`)
   })
 
   it('deve exibir formulário de cadastro', () => {

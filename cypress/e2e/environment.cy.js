@@ -1,6 +1,7 @@
 describe('Diferenciação de Ambientes', () => {
   it('deve mostrar ambiente de desenvolvimento', () => {
-    cy.visit('/pipelineManus')
+    const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+    cy.visit(`${basePath}`)
     cy.checkEnvironment('dev')
     
     // Verifica se o header tem a cor verde (desenvolvimento)

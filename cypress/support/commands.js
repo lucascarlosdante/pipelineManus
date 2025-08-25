@@ -10,7 +10,8 @@
 
 // Comando para fazer login
 Cypress.Commands.add('login', (email = 'teste@email.com', password = '123456') => {
-  cy.visit('/pipelineManus/#/login')
+  const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+  cy.visit(`${basePath}/#/login`)
   cy.get('[data-testid="email-input"]').type(email)
   cy.get('[data-testid="password-input"]').type(password)
   cy.get('[data-testid="login-button"]').click()

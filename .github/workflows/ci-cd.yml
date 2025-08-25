@@ -179,6 +179,7 @@ jobs:
         config-file: cypress.config.js
       env:
         CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
+        CI: true
         
     - name: Upload Cypress screenshots
       uses: actions/upload-artifact@v4

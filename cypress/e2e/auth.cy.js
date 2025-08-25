@@ -1,6 +1,7 @@
 describe('Autenticação', () => {
   beforeEach(() => {
-    cy.visit('/pipelineManus')
+    const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+    cy.visit(`${basePath}`)
   })
 
   it('deve redirecionar para login quando não autenticado', () => {
