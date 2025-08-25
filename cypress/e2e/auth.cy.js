@@ -4,7 +4,7 @@ describe('Autenticação', () => {
     cy.visit(`${basePath}`)
     
     // Aguarda a página carregar completamente antes de prosseguir
-    cy.get('body', { timeout: 15000 }).should('be.visible')
+    cy.get('body').should('be.visible')
   })
 
   it('deve redirecionar para login quando não autenticado', () => {
@@ -31,8 +31,7 @@ describe('Autenticação', () => {
     cy.get('[data-testid="password-input"]').type('123')
     cy.get('[data-testid="login-button"]').click()
     
-    // Aguarda um pouco e verifica se ainda está na página de login (não fez login)
-    cy.wait(1000)
+    // Verifica se ainda está na página de login (não fez login)
     cy.url().should('include', '#/login')
   })
 
@@ -48,15 +47,9 @@ describe('Autenticação', () => {
     cy.get('[data-testid="login-button"]').click()
     
     cy.url().should('include', '#/dashboard')
-    // cy.contains('Dashboard').should('be.visible')
-    cy.contains('Dashboard', { timeout: 100 }).should('be.visible')
+    cy.contains('Dashboard').should('be.visible')
     
-    cy.log('📊 Dashboard carregado, aguardando estabilização...')
-    // Aguarda um pouco para garantir que tudo carregou
-    // cy.wait(2000)
-    
-    cy.log(' Fazendo logout...')
-    // Agora faz logout
+    cy.log('📊 Dashboard carregado, fazendo logout...')
     cy.logout()
     
     cy.log('✅ Logout concluído com sucesso!')

@@ -20,19 +20,19 @@ Cypress.Commands.add('login', (email = 'teste@email.com', password = '123456') =
   
   // Aguarda a página de login carregar completamente
   cy.log('⏳ [LOGIN] Aguardando página de login carregar...')
-  cy.contains('Entrar', { timeout: 10000 }).should('be.visible')
+  cy.contains('Entrar').should('be.visible')
   
   cy.log('📝 [LOGIN] Preenchendo credenciais...')
-  cy.get('[data-testid="email-input"]', { timeout: 10000 }).type(email)
-  cy.get('[data-testid="password-input"]', { timeout: 10000 }).type(password)
+  cy.get('[data-testid="email-input"]').type(email)
+  cy.get('[data-testid="password-input"]').type(password)
   
   cy.log('🖱️ [LOGIN] Clicando no botão de login...')
-  cy.get('[data-testid="login-button"]', { timeout: 10000 }).click()
+  cy.get('[data-testid="login-button"]').click()
   
   // Aguarda a transição para o dashboard
   cy.log('⏳ [LOGIN] Aguardando redirecionamento para dashboard...')
-  cy.location('hash', { timeout: 15000 }).should('include', '/dashboard')
-  cy.contains('Dashboard', { timeout: 10000 }).should('be.visible')
+  cy.location('hash').should('include', '/dashboard')
+  cy.contains('Dashboard').should('be.visible')
   
   cy.log('✅ [LOGIN] Login concluído com sucesso!')
 })
@@ -62,16 +62,13 @@ Cypress.Commands.add('logout', () => {
         cy.log(`📝 [LOGOUT] Botões disponíveis: ${buttonTexts.join(', ')}`)
       })
       // Força o teste a falhar com uma mensagem clara
-      cy.get('[data-testid="logout-button"]', { timeout: 15000 })
+      cy.get('[data-testid="logout-button"]')
         .should('be.visible')
         .click({ force: true })
     }
   })
   
   cy.log('✅ [LOGOUT] Botão clicado, aguardando redirecionamento...')
-  
-  // Aguarda um pouco após o clique
-  cy.wait(1000)
   
   // No ambiente CI, use uma estratégia mais robusta
   if (Cypress.env('CI')) {
@@ -83,9 +80,9 @@ Cypress.Commands.add('logout', () => {
         return win.location.hash.includes('/login')
       }
       
-      // Aguarda até 30 segundos pela mudança de hash
+      // Aguarda até 10 segundos pela mudança de hash
       const startTime = Date.now()
-      const timeout = 30000
+      const timeout = 10000
       
       const poll = () => {
         if (checkRedirect()) {
@@ -104,15 +101,14 @@ Cypress.Commands.add('logout', () => {
     })
     
     // Verificação adicional do elemento
-    cy.contains('Entrar', { timeout: 10000 }).should('be.visible')
+    cy.contains('Entrar').should('be.visible')
     
   } else {
     // Estratégia local (mais rápida)
     cy.log('🏠 [LOGOUT] Usando estratégia local')
-    const timeout = 15000
     
-    cy.location('hash', { timeout }).should('include', '/login')
-    cy.contains('Entrar', { timeout: 15000 }).should('be.visible')
+    cy.location('hash').should('include', '/login')
+    cy.contains('Entrar').should('be.visible')
   }
   
   cy.log('✅ [LOGOUT] Logout concluído com sucesso!')

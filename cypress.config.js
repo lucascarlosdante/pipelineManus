@@ -9,13 +9,6 @@ export default defineConfig({
     viewportHeight: 720,
     video: true, // Habilitar vídeo para debug
     screenshotOnRunFailure: true,
-    // Configurações de timeout mais generosas para CI
-    defaultCommandTimeout: process.env.CI ? 15000 : 4000,
-    pageLoadTimeout: process.env.CI ? 180000 : 60000, // 3 minutos no CI
-    requestTimeout: process.env.CI ? 15000 : 5000,
-    // Configurações adicionais para debug
-    chromeWebSecurity: false,
-    watchForFileChanges: false,
     // Configurações para evitar problemas de carregamento no CI
     blockHosts: process.env.CI ? ['*googlesyndication.com', '*google-analytics.com', '*googletagmanager.com'] : [],
     modifyObstructiveThirdPartyCode: true,
