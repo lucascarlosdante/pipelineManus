@@ -17,7 +17,6 @@ permissions:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '10.15.0'
 
 jobs:
   # Job de verificações de qualidade
@@ -35,8 +34,6 @@ jobs:
         
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
-      with:
-        version: ${{ env.PNPM_VERSION }}
 
     - name: Get pnpm store directory
       shell: bash
@@ -136,8 +133,6 @@ jobs:
         
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
-      with:
-        version: ${{ env.PNPM_VERSION }}
 
     - name: Get pnpm store directory
       shell: bash
