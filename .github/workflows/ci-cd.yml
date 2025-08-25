@@ -172,13 +172,14 @@ jobs:
         install: false
         build: pnpm run build
         start: pnpm run preview
-        wait-on: 'http://localhost:4173/pipelineManus'
+        wait-on: 'http://localhost:4173'
         wait-on-timeout: 120
         browser: chrome
         record: false
         config-file: cypress.config.js
       env:
         CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
+        CI: true
         
     - name: Upload Cypress screenshots
       uses: actions/upload-artifact@v4

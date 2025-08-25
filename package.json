@@ -11,7 +11,10 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:e2e": "cypress run",
-    "test:e2e:dev": "cypress open"
+    "test:e2e:dev": "cypress open",
+    "test:runner": "cypress run --spec cypress/e2e/test-runner.cy.js",
+    "test:runner:open": "cypress open --spec cypress/e2e/test-runner.cy.js",
+    "test:failures": "cypress run --spec cypress/e2e/test-runner.cy.js && echo 'Relatório de falhas salvo em: cypress/results/test-failures.txt'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

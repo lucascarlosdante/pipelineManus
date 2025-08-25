@@ -1,6 +1,7 @@
 describe('Diferenciação de Ambientes', () => {
   it('deve mostrar ambiente de desenvolvimento', () => {
-    cy.visit('/')
+    const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+    cy.visit(`${basePath}`)
     cy.checkEnvironment('dev')
     
     // Verifica se o header tem a cor verde (desenvolvimento)
@@ -29,7 +30,7 @@ describe('Diferenciação de Ambientes', () => {
   })
 
   it('deve mostrar indicador visual consistente', () => {
-    cy.visit('/#/login')
+    cy.visit('/pipelineManus/#/login')
     
     // Verifica elementos visuais na página de login
     cy.get('div').contains('🚀 Ambiente:').should('be.visible')
@@ -44,7 +45,7 @@ describe('Diferenciação de Ambientes', () => {
     // Este teste seria executado em diferentes URLs para cada ambiente
     // Por exemplo: dev.app.com, tst.app.com, hml.app.com, prd.app.com
     
-    cy.visit('/')
+    cy.visit('/pipelineManus')
     
     // Para desenvolvimento local, sempre será 'dev'
     cy.checkEnvironment('dev')
