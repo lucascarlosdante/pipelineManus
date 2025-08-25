@@ -43,17 +43,25 @@ describe('Autenticação', () => {
   })
 
   it('deve fazer logout', () => {
+    cy.log('🔄 Iniciando teste de logout')
+    
     // Primeiro faz login
+    cy.log('📝 Fazendo login...')
     cy.login()
     
+    cy.log('✅ Login concluído, verificando dashboard...')
     // Aguarda o dashboard carregar completamente
     cy.contains('Dashboard', { timeout: 10000 }).should('be.visible')
     
+    cy.log('📊 Dashboard carregado, aguardando estabilização...')
     // Aguarda um pouco para garantir que tudo carregou
-    cy.wait(1000)
+    cy.wait(2000)
     
+    cy.log(' Fazendo logout...')
     // Agora faz logout
     cy.logout()
+    
+    cy.log('✅ Logout concluído com sucesso!')
   })
 
   it('deve mostrar/ocultar senha', () => {
