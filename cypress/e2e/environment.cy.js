@@ -29,7 +29,7 @@ describe('Diferenciação de Ambientes', () => {
     cy.get('[data-testid="add-cancel-button"]').click()
   })
 
-  it.only('deve mostrar indicador visual consistente', () => {
+  it('deve mostrar indicador visual consistente', () => {
     // cy.login()
     cy.visit('/pipelineManus/#/login')
     
