@@ -8,7 +8,7 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-// Comando para fazer login
+// Comando para fazer login 
 Cypress.Commands.add('login', (email = 'teste@email.com', password = '123456') => {
   cy.log('🔄 [LOGIN] Iniciando processo de login...')
   
