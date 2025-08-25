@@ -1,6 +1,7 @@
 describe('Cadastro de Usuário', () => {
   beforeEach(() => {
-    cy.visit('/register')
+    const basePath = Cypress.env('CI') ? '/pipelineManus' : ''
+    cy.visit(`${basePath}/#/register`)
   })
 
   it('deve exibir formulário de cadastro', () => {
@@ -20,8 +21,9 @@ describe('Cadastro de Usuário', () => {
     cy.get('[data-testid="email-input"]').type('joao@email.com')
     cy.get('[data-testid="phone-input"]').type('11999999999')
     
+    // Interação com Radix UI Select
     cy.get('[data-testid="department-select"]').click()
-    cy.contains('Tecnologia da Informação').click()
+    cy.get('[data-slot="select-item"]').contains('Tecnologia da Informação').click()
     
     cy.get('[data-testid="password-input"]').type('123456')
     cy.get('[data-testid="confirm-password-input"]').type('123456')
@@ -47,8 +49,21 @@ describe('Cadastro de Usuário', () => {
   })
 
   it('deve validar confirmação de senha', () => {
+    // Preenche campos obrigatórios primeiro
+    cy.get('[data-testid="name-input"]').type('João Silva')
+    cy.get('[data-testid="email-input"]').type('joao@email.com')
+    cy.get('[data-testid="phone-input"]').type('11999999999')
+    
+    cy.get('[data-testid="department-select"]').click()
+    cy.get('[data-slot="select-item"]').contains('Tecnologia da Informação').click()
+    
+    // Preenche senhas diferentes
     cy.get('[data-testid="password-input"]').type('123456')
     cy.get('[data-testid="confirm-password-input"]').type('654321')
+    
+    // Aceita termos para permitir submit
+    cy.get('[data-testid="accept-terms-checkbox"]').click()
+    
     cy.get('[data-testid="register-button"]').click()
     
     cy.get('[data-testid="confirm-password-error"]').should('contain', 'Senhas não coincidem')

@@ -1,0 +1,92 @@
+{
+  "validUser": {
+    "name": "João Silva",
+    "email": "joao.silva@email.com",
+    "phone": "11999999999",
+    "department": "Tecnologia da Informação",
+    "password": "123456",
+    "confirmPassword": "123456",
+    "newsletter": true
+  },
+  
+  "validUser2": {
+    "name": "Maria Santos",
+    "email": "maria.santos@email.com", 
+    "phone": "11988888888",
+    "department": "Recursos Humanos",
+    "password": "654321",
+    "confirmPassword": "654321",
+    "newsletter": false
+  },
+
+  "testUser": {
+    "name": "Usuário de Teste",
+    "email": "teste@email.com",
+    "phone": "11977777777", 
+    "department": "Marketing",
+    "password": "123456",
+    "confirmPassword": "123456",
+    "newsletter": true
+  },
+
+  "invalidUsers": {
+    "invalidEmail": {
+      "name": "Usuário Inválido",
+      "email": "email_invalido",
+      "phone": "11999999999",
+      "department": "Vendas",
+      "password": "123456",
+      "confirmPassword": "123456"
+    },
+    
+    "shortPassword": {
+      "name": "Senha Curta",
+      "email": "senha.curta@email.com",
+      "phone": "11999999999", 
+      "department": "Operações",
+      "password": "123",
+      "confirmPassword": "123"
+    },
+    
+    "mismatchedPassword": {
+      "name": "Senhas Diferentes", 
+      "email": "senhas.diferentes@email.com",
+      "phone": "11999999999",
+      "department": "Financeiro", 
+      "password": "123456",
+      "confirmPassword": "654321"
+    },
+    
+    "shortPhone": {
+      "name": "Telefone Curto",
+      "email": "telefone.curto@email.com",
+      "phone": "119999",
+      "department": "Marketing",
+      "password": "123456", 
+      "confirmPassword": "123456"
+    },
+    
+    "emptyFields": {
+      "name": "",
+      "email": "",
+      "phone": "",
+      "department": "",
+      "password": "",
+      "confirmPassword": ""
+    }
+  },
+
+  "departments": [
+    "Tecnologia da Informação",
+    "Recursos Humanos", 
+    "Financeiro",
+    "Marketing",
+    "Vendas",
+    "Operações"
+  ],
+
+  "defaultCredentials": {
+    "email": "teste@email.com",
+    "password": "123456"
+  }
+}

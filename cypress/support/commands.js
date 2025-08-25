@@ -1,53 +1,259 @@
 // ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
+// Enhanced Custom Commands with Page Object Model
+// 
+// Importação das classes de apoio
 // ***********************************************
 
-// Comando para fazer login
+import { LoginPage } from './pages/LoginPage.js'
+import { RegisterPage } from './pages/RegisterPage.js'
+import { DashboardPage } from './pages/DashboardPage.js'
+import { DataHelper } from './utils/DataHelper.js'
+import { EnvironmentHelper } from './utils/EnvironmentHelper.js'
+import { PerformanceHelper } from './utils/PerformanceHelper.js'
+import { ApiHelper } from './helpers/ApiHelper.js'
+
+// Inicialização automática do ambiente
+beforeEach(() => {
+  EnvironmentHelper.configureCypress()
+  EnvironmentHelper.logEnvironmentInfo()
+})
+
+// =============================================================================
+// COMANDOS DE AUTENTICAÇÃO OTIMIZADOS
+// =============================================================================
+
+/**
+ * Comando de login otimizado usando Page Objects
+ */
 Cypress.Commands.add('login', (email = 'teste@email.com', password = '123456') => {
-  cy.visit('/login')
-  cy.get('[data-testid="email-input"]').type(email)
-  cy.get('[data-testid="password-input"]').type(password)
-  cy.get('[data-testid="login-button"]').click()
-  cy.url().should('include', '/dashboard')
+  PerformanceHelper.startTimer('login_operation')
+  
+  const loginPage = new LoginPage()
+  loginPage.goto().login(email, password)
+  
+  PerformanceHelper.endTimer('login_operation')
+  PerformanceHelper.measurePageLoad('dashboard')
 })
 
-// Comando para fazer logout
+/**
+ * Login rápido para testes que precisam estar autenticados
+ */
+Cypress.Commands.add('fastLogin', () => {
+  // Login direto via localStorage (bypassa UI para velocidade)
+  cy.window().then(win => {
+    win.localStorage.setItem('authToken', 'test-token')
+    win.localStorage.setItem('user', JSON.stringify({
+      id: 1,
+      name: 'Usuário Teste',
+      email: 'teste@email.com'
+    }))
+  })
+  
+  const dashboardPage = new DashboardPage()
+  dashboardPage.goto()
+  
+  cy.log('⚡ [FAST LOGIN] Login via localStorage concluído')
+})
+
+/**
+ * Login com dados de fixture
+ */
+Cypress.Commands.add('loginWithFixture', (userType = 'validUser') => {
+  cy.fixture('users').then(users => {
+    const user = users[userType]
+    if (!user) {
+      throw new Error(`Usuário ${userType} não encontrado nas fixtures`)
+    }
+    
+    const loginPage = new LoginPage()
+    loginPage.goto().login(user.email, user.password)
+  })
+})
+
+/**
+ * Comando de logout otimizado
+ */
 Cypress.Commands.add('logout', () => {
-  cy.get('[data-testid="logout-button"]').click()
-  cy.url().should('include', '/login')
+  const dashboardPage = new DashboardPage()
+  dashboardPage.logout()
 })
 
-// Comando para adicionar um item
-Cypress.Commands.add('addItem', (name, description, priority = 'medium', category = 'geral') => {
-  cy.get('[data-testid="add-item-button"]').click()
-  cy.get('[data-testid="add-name-input"]').type(name)
-  cy.get('[data-testid="add-description-input"]').type(description)
-  cy.get('[data-testid="add-priority-select"]').click()
-  cy.contains(priority === 'low' ? 'Baixa' : priority === 'high' ? 'Alta' : 'Média').click()
-  cy.get('[data-testid="add-category-select"]').click()
-  cy.contains(category === 'trabalho' ? 'Trabalho' : category === 'pessoal' ? 'Pessoal' : category === 'projeto' ? 'Projeto' : 'Geral').click()
-  cy.get('[data-testid="add-submit-button"]').click()
+// =============================================================================
+// COMANDOS DE CRUD OTIMIZADOS
+// =============================================================================
+
+/**
+ * Adiciona item usando Page Objects
+ */
+Cypress.Commands.add('addItem', (itemData = {}) => {
+  PerformanceHelper.startTimer('add_item_operation')
+  
+  const dashboardPage = new DashboardPage()
+  dashboardPage.addItem(itemData)
+  
+  PerformanceHelper.endTimer('add_item_operation')
 })
 
-// Comando para verificar se um item existe na tabela
+/**
+ * Adiciona múltiplos itens de forma eficiente
+ */
+Cypress.Commands.add('addMultipleItems', (count = 3, baseData = {}) => {
+  const items = DataHelper.generateMultipleItems(count, baseData)
+  const dashboardPage = new DashboardPage()
+  
+  items.forEach((item, index) => {
+    cy.log(`📝 [BULK ADD] Adicionando item ${index + 1}/${count}`)
+    dashboardPage.addItem(item)
+  })
+})
+
+/**
+ * Verifica existência de item na tabela
+ */
 Cypress.Commands.add('itemShouldExist', (itemName) => {
-  cy.get('[data-testid="items-table"]').should('contain', itemName)
+  const dashboardPage = new DashboardPage()
+  dashboardPage.shouldItemExist(itemName)
 })
 
-// Comando para verificar o ambiente atual
-Cypress.Commands.add('checkEnvironment', (environment) => {
-  const envNames = {
-    dev: 'Desenvolvimento',
-    tst: 'Teste',
-    hml: 'Homologação',
-    prd: 'Produção'
-  }
-  cy.contains(`Ambiente: ${envNames[environment]}`).should('be.visible')
+/**
+ * Verifica que item não existe
+ */
+Cypress.Commands.add('itemShouldNotExist', (itemName) => {
+  const dashboardPage = new DashboardPage()
+  dashboardPage.shouldItemNotExist(itemName)
 })
+
+// =============================================================================
+// COMANDOS DE AMBIENTE E VERIFICAÇÃO
+// =============================================================================
+
+/**
+ * Verifica ambiente atual
+ */
+Cypress.Commands.add('checkEnvironment', (expectedEnvironment) => {
+  const dashboardPage = new DashboardPage()
+  dashboardPage.shouldShowEnvironment(expectedEnvironment)
+})
+
+/**
+ * Comando para setup de teste com dados limpos
+ */
+Cypress.Commands.add('setupTest', (testName, options = {}) => {
+  cy.log(`� [SETUP] Iniciando teste: ${testName}`)
+  
+  // Configura ambiente
+  EnvironmentHelper.setEnvironmentViewport()
+  
+  // Configura mocks se necessário
+  if (options.mockApi) {
+    ApiHelper.setupCommonInterceptions()
+  }
+  
+  // Login automático se necessário
+  if (options.requireAuth !== false) {
+    cy.fastLogin()
+  }
+  
+  // Performance monitoring se habilitado
+  if (options.monitorPerformance) {
+    PerformanceHelper.monitorNetworkRequests()
+    PerformanceHelper.monitorMemoryUsage(testName)
+  }
+})
+
+// =============================================================================
+// COMANDOS DE VALIDAÇÃO E VERIFICAÇÃO
+// =============================================================================
+
+/**
+ * Verifica loading/spinner desapareceu
+ */
+Cypress.Commands.add('shouldFinishLoading', (timeout = 10000) => {
+  cy.get('[data-testid*="loading"], [data-testid*="spinner"], .loading', { timeout })
+    .should('not.exist')
+})
+
+/**
+ * Aguarda elemento de forma inteligente
+ */
+Cypress.Commands.add('waitForElementSmart', (selector, maxWait = 10000) => {
+  PerformanceHelper.waitForElementSmart(selector, maxWait)
+})
+
+/**
+ * Screenshot inteligente com nomeação automática
+ */
+Cypress.Commands.add('smartScreenshot', (name = null) => {
+  const screenshotName = name || `${Cypress.currentTest.title}_${Date.now()}`
+  PerformanceHelper.smartScreenshot(screenshotName)
+})
+
+// =============================================================================
+// COMANDOS DE DADOS E FIXTURES
+// =============================================================================
+
+/**
+ * Carrega e retorna dados de fixture
+ */
+Cypress.Commands.add('loadFixture', (fixtureName, dataKey = null) => {
+  return cy.fixture(fixtureName).then(data => {
+    return dataKey ? data[dataKey] : data
+  })
+})
+
+/**
+ * Gera dados únicos para teste
+ */
+Cypress.Commands.add('generateTestData', (type = 'user', overrides = {}) => {
+  let data
+  
+  switch (type) {
+    case 'user':
+      data = DataHelper.generateUserData(overrides)
+      break
+    case 'item':
+      data = DataHelper.generateItemData(overrides)
+      break
+    default:
+      throw new Error(`Tipo de dados não suportado: ${type}`)
+  }
+  
+  cy.wrap(data).as(`generated_${type}_data`)
+  return cy.wrap(data)
+})
+
+// =============================================================================
+// COMANDOS DE DEBUG E DESENVOLVIMENTO
+// =============================================================================
+
+/**
+ * Log de debug com contexto
+ */
+Cypress.Commands.add('debugLog', (message, data = null) => {
+  const timestamp = new Date().toISOString()
+  const testTitle = Cypress.currentTest.title
+  const debugMessage = `🔍 [DEBUG] ${timestamp} - ${testTitle}: ${message}`
+  
+  cy.log(debugMessage)
+  cy.task('log', debugMessage)
+  
+  if (data) {
+    cy.task('log', JSON.stringify(data, null, 2))
+  }
+})
+
+/**
+ * Pausa execução em ambiente de desenvolvimento
+ */
+Cypress.Commands.add('debugPause', () => {
+  if (EnvironmentHelper.isLocal()) {
+    cy.pause()
+  } else {
+    cy.log('⏭️ [DEBUG] Pause ignorado em ambiente CI')
+  }
+})
+
+// =============================================================================
+// COMANDOS LEGACY (mantidos para compatibilidade)
+// =============================================================================
 
