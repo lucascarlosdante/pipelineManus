@@ -1,6 +1,6 @@
 describe('Autenticação', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visit('/pipelineManus')
   })
 
   it('deve redirecionar para login quando não autenticado', () => {

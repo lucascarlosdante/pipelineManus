@@ -30,6 +30,8 @@ export default defineConfig({
   preview: {
     port: 4173,
     strictPort: true,
+    // Força o servidor a servir o index.html para rotas não encontradas (SPA)
+    open: '/pipelineManus/',
   },
   server: {
     port: 5173,

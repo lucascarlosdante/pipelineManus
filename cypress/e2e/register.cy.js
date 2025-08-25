@@ -1,6 +1,6 @@
 describe('Cadastro de Usuário', () => {
   beforeEach(() => {
-    cy.visit('/#/register')
+    cy.visit('/pipelineManus/#/register')
   })
 
   it('deve exibir formulário de cadastro', () => {

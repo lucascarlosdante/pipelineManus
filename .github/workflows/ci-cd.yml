@@ -172,7 +172,7 @@ jobs:
         install: false
         build: pnpm run build
         start: pnpm run preview
-        wait-on: 'http://localhost:4173/pipelineManus'
+        wait-on: 'http://localhost:4173'
         wait-on-timeout: 120
         browser: chrome
         record: false
