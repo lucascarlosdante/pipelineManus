@@ -34,7 +34,7 @@ Todos os elementos possuem `data-testid` para testes automatizados:
 - **HML**: Azul - Homologação
 - **PRD**: Vermelho - Produção
 
-## Comandos de Desenvolvimento
+## Comandos de Desenvolvimento 
 
 ```bash
 # Instalar dependências 
