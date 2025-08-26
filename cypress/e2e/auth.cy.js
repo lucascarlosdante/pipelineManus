@@ -8,7 +8,7 @@ describe('Autenticação', () => {
   })
 
   it('deve redirecionar para login quando não autenticado', () => {
-    cy.url().should('include', '#/loginn') /////////////
+    cy.url().should('include', '#/login') /////////////
     cy.contains('Entrar').should('be.visible')
   })
 
