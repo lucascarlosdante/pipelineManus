@@ -28,13 +28,13 @@ Todos os elementos possuem `data-testid` para testes automatizados:
 - Tabelas e linhas
 - Modais e dropdowns
 
-### 4. Diferenciação de Ambientes
+### 4. Diferenciação de Ambientes  
 - **DEV**: Verde - Desenvolvimento
 - **TST**: Amarelo - Teste
 - **HML**: Azul - Homologação
 - **PRD**: Vermelho - Produção
 
-## Comandos de Desenvolvimento
+## Comandos de Desenvolvimento 
 
 ```bash
 # Instalar dependências 
